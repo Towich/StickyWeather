@@ -11,13 +11,13 @@ class ApiServiceImpl(
     private val client: HttpClient
 ) : ApiService {
 
-    override suspend fun getCities(): ApiResult<List<CitySerializable>> {
+    override suspend fun getCities(): ApiResult<List<CityModel>> {
         return try {
             val response = client.get(ApiRoutes.BASE_URL_CITIES)
 
             when(response.status.value){
                 in 200..299 -> {
-                    ApiResult.Success(response.body())
+                    ApiResult.Success(response.body<List<CitySerializable>>().map { it.convertToCityModel() })
                 }
 
                 else -> {

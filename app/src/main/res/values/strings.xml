@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">StickyWeather</string>
+    <string name="error_message">Произошла ошибка</string>
+    <string name="refresh_button">Обновить</string>
 </resources>
