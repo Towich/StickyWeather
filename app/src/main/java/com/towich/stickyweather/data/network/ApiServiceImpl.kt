@@ -1,7 +1,9 @@
 package com.towich.stickyweather.data.network
 
+import com.towich.stickyweather.BuildConfig
 import com.towich.stickyweather.data.model.CityModel
 import com.towich.stickyweather.data.network.serializable.CitySerializable
+import com.towich.stickyweather.data.network.serializable.WeatherSerializable
 import com.towich.stickyweather.util.ApiResult
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -29,13 +31,14 @@ class ApiServiceImpl(
         }
     }
 
-    override suspend fun getWeatherByCity(cityModel: CityModel): ApiResult<Float> {
+    override suspend fun getWeatherByCity(cityModel: CityModel): ApiResult<WeatherSerializable> {
         return try {
             val response = client.get(ApiRoutes.BASE_URL_WEATHER + ApiRoutes.WEATHER_v2_5) {
                 url {
                     parameters.append("lat", cityModel.latitude)
                     parameters.append("lon", cityModel.longitude)
-                    parameters.append("appid", "1ba9f9a3308dc36189f4e308b31691a4")
+                    parameters.append("units", "metric")
+                    parameters.append("appid", BuildConfig.API_KEY_OPEN_WEATHER)
                 }
             }
 

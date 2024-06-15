@@ -30,7 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,10 +39,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.towich.stickyweather.R
 import com.towich.stickyweather.data.model.CityModel
-import com.towich.stickyweather.ui.screen.weather.WeatherScreenUiState
+import com.towich.stickyweather.util.ScreenUiState
 
 @Composable
-fun MainScreen(
+fun CitiesScreen(
     navigateToInfoScreen: () -> Unit,
     viewModel: CitiesViewModel = hiltViewModel()
 ) {
@@ -51,7 +50,7 @@ fun MainScreen(
     val uiState by viewModel.screenUiState.collectAsState()
 
     when (uiState) {
-        is WeatherScreenUiState.Loading -> {
+        is ScreenUiState.Loading -> {
             Box(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -64,7 +63,7 @@ fun MainScreen(
             }
         }
 
-        is WeatherScreenUiState.Error -> {
+        is ScreenUiState.Error -> {
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -133,7 +132,10 @@ fun MainScreen(
                             cityModel.city,
                             showCharHeader = startIndexes.contains(index) && listState.firstVisibleItemIndex != index,
                             commonModifier,
-                            navigateToInfoScreen = navigateToInfoScreen
+                            navigateToInfoScreen = navigateToInfoScreen,
+                            setUpCurrentCityModel = {
+                                viewModel.setCurrentCityModel(cityModel = cityModel)
+                            }
                         )
                     }
                 }
@@ -179,7 +181,8 @@ fun NameItem(
     name: String,
     showCharHeader: Boolean,
     modifier: Modifier,
-    navigateToInfoScreen: () -> Unit
+    navigateToInfoScreen: () -> Unit,
+    setUpCurrentCityModel: () -> Unit
 ) {
     Row(
         Modifier
@@ -203,6 +206,7 @@ fun NameItem(
                 .clip(RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp))
                 .clickable {
                     navigateToInfoScreen()
+                    setUpCurrentCityModel()
                 }
         ) {
             Row(
