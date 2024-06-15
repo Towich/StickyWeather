@@ -47,45 +47,8 @@ fun MainScreen(
     navigateToInfoScreen: () -> Unit,
     viewModel: CitiesViewModel = hiltViewModel()
 ) {
-
-//    val cities = listOf(
-//        "Архангельск",
-//        "Барнаул",
-//        "Владивосток",
-//        "Воронеж",
-//        "Екатеринбург",
-//        "Ижевск",
-//        "Иркутск",
-//        "Казань",
-//        "Краснодар",
-//        "Красноярск",
-//        "Кузнецк",
-//        "Липецк",
-//        "Москва",
-//        "Нижний Новгород",
-//        "Новосибирск",
-//        "Омск",
-//        "Оренбург",
-//        "Пермь",
-//        "Ростов-на-Дону",
-//        "Самара",
-//        "Санкт-Петербург",
-//        "Саратов",
-//        "Сочи",
-//        "Тольятти",
-//        "Томск",
-//        "Тюмень",
-//        "Уфа",
-//        "Ульяновск",
-//        "Хабаровск",
-//        "Челябинск",
-//        "Ярославль"
-//    )
-
     val cities by viewModel.listOfCities.collectAsState()
     val uiState by viewModel.screenUiState.collectAsState()
-
-//    val cities = listOf(CityModel(id = " gfg", city = "Gtgrt", longitude = "54.3", latitude = "43.33"))
 
     when (uiState) {
         is WeatherScreenUiState.Loading -> {
@@ -94,7 +57,10 @@ fun MainScreen(
                     .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ){
-                CircularProgressIndicator()
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(48.dp)
+                )
             }
         }
 
@@ -117,9 +83,12 @@ fun MainScreen(
                 )
 
                 Button(
-                    onClick = { /*TODO*/ }) {
+                    onClick = { viewModel.getAllCities() },
+                    modifier = Modifier
+                        .padding(top = 42.dp)
+                ) {
                     Text(
-                        text = "Обновить",
+                        text = stringResource(id = R.string.refresh_button),
                         fontWeight = FontWeight.Medium,
                         fontSize = 14.sp,
                         lineHeight = 20.sp,

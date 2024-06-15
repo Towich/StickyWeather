@@ -27,7 +27,7 @@ class CitiesViewModel @Inject constructor(
         getAllCities()
     }
 
-    private fun getAllCities(){
+    fun getAllCities(){
         viewModelScope.launch {
             _screenUiState.value = WeatherScreenUiState.Loading
 
